@@ -1,0 +1,39 @@
+{% set name = "pyNA" %}
+{% set version = "0.1" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/underworldcode/pyNA.git
+  git_tag: master
+
+build:
+  skip: true  # [win]
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv
+
+requirements:
+  host:
+    - python
+
+  run:
+    - python
+    - numpy
+    - scipy
+    - matplotlib
+
+
+about:
+  home: "https://github.com/underworldcode/pyNA"
+  license: MIT
+  license_family: MIT
+  license_file:
+  summary: "Neighborhood Algorithm with Python"
+  doc_url: https://pyna.readthedocs.io/
+  dev_url: https://github.com/underworldcode/pyNA/tree/master
+
+extra:
+  recipe-maintainers:
+    - rbeucher
