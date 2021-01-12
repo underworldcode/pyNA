@@ -1,0 +1,12 @@
+LICENSE
+MANIFEST.in
+README.rst
+requirements.txt
+setup.cfg
+setup.py
+docs/NA_Algorithm_in_python.ipynb
+pyNA.egg-info/PKG-INFO
+pyNA.egg-info/SOURCES.txt
+pyNA.egg-info/dependency_links.txt
+pyNA.egg-info/requires.txt
+pyNA.egg-info/top_level.txt

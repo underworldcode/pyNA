@@ -1,0 +1,5 @@
+include LICENSE
+include docs/*
+include requirements.txt
+include README.rst
+include setup.cfg
