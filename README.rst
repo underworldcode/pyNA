@@ -1,6 +1,7 @@
-================================================
-Neighborhood Algorithm: Parameter space search in Python
-================================================
+
+========================
+Neighborhood Algorithm
+========================
 
 ------------
 Installation
