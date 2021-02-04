@@ -175,8 +175,8 @@ class Appraise(object):
             x=np.random.uniform(0.,1.0) # x'  
             y=np.random.uniform(0.,pmax) # y'
             
-            #if y < misfits[pdf(xvals, x)]:
-            if y < logPPDNA(pdf(xvals, x), misfits):
+            if y < misfits[pdf(xvals, x)]:
+            #if y < logPPDNA(pdf(xvals, x), misfits):
                 ran.append(x)
                 naccept += 1
             ntrial += 1
@@ -190,6 +190,8 @@ class Appraise(object):
         The total number of models generated in the random walk is nsample * nsleep.
         """
         
+        new_models = np.zeros((nsample * nsleep, 2))
+        idx = 0
         x = self.models[self.id_model_start]
         # Step of walk
         for walk_step in range(nsample): # Need to add burnin
@@ -207,4 +209,8 @@ class Appraise(object):
                     xp, nodesx = self.NNaxis_int(axis, self.models, model_id=nodex, dk2=dk2)
                     # generate random deviate (update x) according to neighborhood approximation
                     # of conditional probability distribution
-                    x, _ = self.NA_randev(xp, nodesx, self.misfits, 1)  
+                    x[axis], _ = self.NA_randev(xp, nodesx, self.misfits, 1)
+                new_models[idx] = x
+                idx += 1
+
+        return new_models

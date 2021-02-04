@@ -3,6 +3,13 @@
 Neighborhood Algorithm
 ========================
 
+-------------------
+Current development
+-------------------
+
+- [X] Sampling stage
+- [ ] Appraisal stage (In development)
+
 ------------
 Installation
 ------------
