@@ -31,6 +31,7 @@ class Appraise(object):
         self.ne = len(models) # Number of models in the ensemble
         self.nd = models.shape[-1] # Dimension of the parameter space
 
+    @staticmethod
     def NNcalc_dlist(dim, m, pt):
         """ Calculates square of distance from all models to new axis dim
             (defined by dimension dim through point pt)
@@ -50,6 +51,7 @@ class Appraise(object):
         dk2 = np.sum(np.delete(d, dim, axis=1), axis=1)
         return dk2, dnodex, nodex
 
+    @staticmethod
     def NNupdate_dlist(dim, dimlast, m, pt, dk2):
         """ Calculates square of distance from all base points to new
             axis, assuming dlist contains square of all distances to
@@ -73,6 +75,7 @@ class Appraise(object):
         dk2 = dk2 + d1 - d2
         return dk2, dnodex, nodex
 
+    @staticmethod
     def NNaxis_int(axis, models, model_id, dk2, left=True, right=True, root=True):
         """Find intersections of Voronoi cells with current 1D
 
@@ -141,6 +144,7 @@ class Appraise(object):
             
         return xp, nodes
 
+    @staticmethod
     def NA_randev(xvals, nodes, misfits, n):
         """ Generate a random deviate according to a 1D NA PDF
             using a rejection method.
@@ -198,9 +202,9 @@ class Appraise(object):
                 for axis in range(self.nd):
                     print(10*" " + f"Doing axis {axis}")
                     # Calculate dlists
-                    dk2, _, nodex = NNcalc_dlist(axis, self.models, x)
+                    dk2, _, nodex = cls.NNcalc_dlist(axis, self.models, x)
                     # calculate intersection of voronoi cells with current 1D axis
-                    xp, nodesx = NNaxis_int(axis, self.models, model_id=nodex, dk2=dk2)
+                    xp, nodesx = cls.NNaxis_int(axis, self.models, model_id=nodex, dk2=dk2)
                     # generate random deviate (update x) according to neighborhood approximation
                     # of conditional probability distribution
-                    x, _ = NA_randev(xp, nodesx, self.misfits, 1)  
+                    x, _ = cls.NA_randev(xp, nodesx, self.misfits, 1)  
