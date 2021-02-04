@@ -13,10 +13,24 @@ class Sampler(object):
                  n_iterations = 3):
         
         """
+
+        Searching the Parameter space using a Neighborhood Algorithm.
+        
         References:
             Sambridge, M. (1999). Geophysical inversion with a neighbourhood
             algorithm - I. Searching a parameter space. Geophysical Journal
             International, 138(2), 479–494.
+
+        Inputs:
+        -------
+
+        objective_function: Objective function to optimise.
+        lower_bounds: lower bound value for each dimension.
+        upper_bounds: upper bound value for each dimension.
+        n_initial: sample size for first iteration.
+        n_samples: sample size for all other iterations.
+        n_resample: number of cells to re-sample at each iteration.
+        n_iterations: maximum number of iterations.
         """
         
         self.ni = n_initial
@@ -149,8 +163,9 @@ class Sampler(object):
                         
         return new_models         
     
-    def get_dimensionalised_models(self, models):
-        return self.lower_bounds + (self.upper_bounds - self.lower_bounds) * models
+    @property
+    def dim_models(self):
+        return self.lower_bounds + (self.upper_bounds - self.lower_bounds) * self.models
         
     def generate_random_models(self, n):
         # Generate a random set of n models.
@@ -163,13 +178,3 @@ class Sampler(object):
             
         best_models_ids = np.argsort(self.misfits[:self.np])[:nr]
         return self.models[best_models_ids]
-    
-    def plot(self):
-        
-        from scipy.spatial import Voronoi, voronoi_plot_2d
-        models = self.get_dimensionalised_models(self.models)
-        vors = Voronoi(models)
-        fig = voronoi_plot_2d(vors, show_vertices=False)
-        plt.xlim(self.lower_bounds[0], self.upper_bounds[0])
-        plt.ylim(self.lower_bounds[1], self.upper_bounds[1])
-        return
