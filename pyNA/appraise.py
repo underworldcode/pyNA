@@ -12,7 +12,7 @@ def logPPDNA(node, misfits):
     and if necessary rescale them, or include a priori PDFs
     
     """
-    return -0.5 * misfits(node)
+    return -0.5 * misfits[node]
 
 
 class Appraise(object):
@@ -127,7 +127,7 @@ class Appraise(object):
         if left_node is not None and (left_intersect >= range_min):
             xp = [left_intersect] + xp
             nodes = [left_node] + nodes
-            out1, out2 = NNaxis_int(
+            out1, out2 = Appraise.NNaxis_int(
                 axis, models, left_node, dk2, 
                 left=True, right=False, root=False)
             xp = out1 + xp
@@ -136,7 +136,7 @@ class Appraise(object):
         if right_node is not None and (right_intersect <= range_max):
             xp = xp + [right_intersect]
             nodes = nodes + [right_node]
-            out1, out2 = NNaxis_int(
+            out1, out2 = Appraise.NNaxis_int(
                 axis, models, right_node, dk2,
                 left=False, right=True, root=False)
             xp = xp + out1
@@ -202,9 +202,9 @@ class Appraise(object):
                 for axis in range(self.nd):
                     print(10*" " + f"Doing axis {axis}")
                     # Calculate dlists
-                    dk2, _, nodex = cls.NNcalc_dlist(axis, self.models, x)
+                    dk2, _, nodex = self.NNcalc_dlist(axis, self.models, x)
                     # calculate intersection of voronoi cells with current 1D axis
-                    xp, nodesx = cls.NNaxis_int(axis, self.models, model_id=nodex, dk2=dk2)
+                    xp, nodesx = self.NNaxis_int(axis, self.models, model_id=nodex, dk2=dk2)
                     # generate random deviate (update x) according to neighborhood approximation
                     # of conditional probability distribution
-                    x, _ = cls.NA_randev(xp, nodesx, self.misfits, 1)  
+                    x, _ = self.NA_randev(xp, nodesx, self.misfits, 1)  
