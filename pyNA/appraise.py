@@ -1,9 +1,9 @@
 import numpy as np
 
-def logPPDNA(node, misfits):
+def logPPDNA(misfits):
     """ Calculate the log-posterior probability density function of model
     
-    This routine converts the input data array to a log posteriori probability density
+    This routine converts the input data array to a log posterior probability density
     function.
     
     For example if the input data for each model is a simple sum of squares of residuals weighted by
@@ -12,7 +12,7 @@ def logPPDNA(node, misfits):
     and if necessary rescale them, or include a priori PDFs
     
     """
-    return -0.5 * misfits[node]
+    return -0.5 * misfits
 
 
 class Appraise(object):
@@ -164,7 +164,9 @@ class Appraise(object):
             return i
         
         # Maximum of conditional PPD
-        pmax = np.max(misfits[nodes])
+        misfits = misfits[nodes]
+        pmax = np.max(logPPDNA(misfits))
+        pmin = np.min(logPPDNA(misfits))
         
         # Counters  
         naccept=0  
@@ -173,10 +175,10 @@ class Appraise(object):
         ran=[] # output list of random numbers  
         while naccept<n:  
             x=np.random.uniform(0.,1.0) # x'  
-            y=np.random.uniform(0.,pmax) # y'
+            y=np.random.uniform(pmin,pmax) # y'
             
-            if y < misfits[pdf(xvals, x)]:
-            #if y < logPPDNA(pdf(xvals, x), misfits):
+            idx = pdf(xvals, x)
+            if y < logPPDNA(misfits[idx]):
                 ran.append(x)
                 naccept += 1
             ntrial += 1
